@@ -1,33 +1,51 @@
 // array of topics
-var searchTerms = ["trending", "animals", "games"];
+var searchTerms = ["trending", "animals", "games", "food"];
 
 
 function displayGifs(){
     var searchTerm = $(this).attr("name");
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=gqvHLyAWvH6hlE0ZWRLyC37I67jzXvC7";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=gqvHLyAWvH6hlE0ZWRLyC37I67jzXvC7&limit=10";
     
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(response){
-        console.log(response.data[0].images.original.url);
-        // create a div to store all the images
-        var imageDiv = $("<div class='images'>");
-        // store the rating
-        var rating = response.data[0].rating;
-        // create an element to display the rating
-        var pOne = $("<h3>").text("Rating: " + rating);
-        // display the rating
-        imageDiv.append(pOne)
+        for(var g = 0; g < response.data.length; g++){
+            // console.log(response.data[g].images.original.url);
+            // create a div to store all the images
+            var imageDiv = $("<div class='images'>");
+            // store the rating
+            var rating = response.data[g].rating;
+            // create an element to display the rating
+            var hThree = $("<h3>").text("Rating: " + rating);
+            // display the rating
+            imageDiv.append(hThree);
+    
+            // retrieve URL for still gif
+            var gifURL = response.data[g].images.original_still.url;
+            var gifURLAnimated = response.data[g].images.original.url;
+            console.log(gifURLAnimated);
+    
+            // create an element to hold the gif
+            var gif = $("<img>").attr("data-still", gifURL).attr("data-animate", gifURLAnimated).attr("src", gifURL).attr("data-state", "still")
+            
+            imageDiv.append(gif);
+    
+            $("#gif-view").prepend(imageDiv);
 
-        // retrieve URL for still gif
-        var gifURL = response.data[0].images.original_still.url;
+            gif.click(function(){
+                var state = $(this).attr("data-state");
+                if (state === "still"){
+                    dataAnimate = $(this).attr("data-animate");
+                    $(this).attr("src", dataAnimate).attr("data-state", "animate")
+                }
+                if (state === "animate"){
+                    dataStill = $(this).attr("data-still");
+                    $(this).attr("src", dataStill).attr("data-state", "still")
+                }
 
-        // create an element to hold the gif
-        var gif = $("<img>").attr("src", gifURL);
-        imageDiv.append(gif);
-
-        $("#gif-view").prepend(imageDiv);
+            })
+        }
         
     })
 }
@@ -49,7 +67,7 @@ function renderButtons(){
     }
 }
 
-$("add-image").click(function(event){
+$("#add-image").click(function(event){
     event.preventDefault();
     // receive the input from the textbox
     var searchTerm = $("#image-input").val().trim();
@@ -59,6 +77,7 @@ $("add-image").click(function(event){
 })
 
 $(document).on("click", ".term-button", displayGifs);
+
 
 renderButtons();
 
