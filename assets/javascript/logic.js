@@ -1,5 +1,5 @@
 // array of topics
-var searchTerms = ["trending", "animals", "games", "food"];
+var searchTerms = ["drinks", "animals", "games", "food"];
 
 
 function displayGifs(){

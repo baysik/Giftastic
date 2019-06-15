@@ -1,5 +1,12 @@
 .term-button {
     color: white;
     background-color: rgb(197, 197, 235);
-    padding: 10px;
+    padding: 5px 15px;
+    margin-right: 5px;
+}
+#image-form{
+    margin-top: 10px;
+}
+#add-image{
+    margin-top: 10px;
 }
