@@ -1,5 +1,6 @@
 # Giftastic
 Using the Giphy API, search for your own gifs.
+https://baysik.github.io/Giftastic/
 
 Instructions:
 1. Click a category or add one yourself.
